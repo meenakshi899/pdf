@@ -1,0 +1,430 @@
+%PDF-1.4
+%
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Count 4 /Kids [ 5 0 R 7 0 R 9 0 R 11 0 R ] >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Length 2154 >>
+stream
+BT
+/F1 10 Tf
+48 800 Td
+14 TL
+(# Odoo Support Scope V1.1 \(7 April 2026\) - Simple Hindi Guide) Tj
+T*
+() Tj
+T*
+(## 1\) Yeh document kis liye hai?) Tj
+T*
+(Yeh guide Aha! Consulting ke Odoo support scope ko **simple language** mein explain karti) Tj
+T*
+(hai, taaki management, admin team aur technical team sab easily samajh saken.) Tj
+T*
+() Tj
+T*
+(---) Tj
+T*
+() Tj
+T*
+(## 2\) Overarching Requirements \(High-Level Rules\)) Tj
+T*
+(1. Current Odoo version: **V19**.) Tj
+T*
+(2. Saara kaam future upgrades ke liye compatible hona chahiye.) Tj
+T*
+(3. Existing database integrity aur customizations ko damage nahi hona chahiye.) Tj
+T*
+(4. Naya kaam existing live Odoo ko break kiye bina deploy hona chahiye.) Tj
+T*
+(5. Hosting currently custom server par hai:  ) Tj
+T*
+(   **https://portal.ahaconsulting.net.au/**) Tj
+T*
+() Tj
+T*
+(---) Tj
+T*
+() Tj
+T*
+(## 3\) IP, License aur Responsibility) Tj
+T*
+(1. Jo code/work banega uski IP Aha! Consulting ki hogi.) Tj
+T*
+(2. Code reuse pe koi ongoing fee nahi.) Tj
+T*
+(3. Aisa code nahi banana jo third-party paid dependency force kare.) Tj
+T*
+(4. Agar existing customized code ko damage hota hai, to repair no extra cost par hona) Tj
+T*
+(chahiye.) Tj
+T*
+() Tj
+T*
+(---) Tj
+T*
+() Tj
+T*
+(## 4\) Priority 1 - Stripe Credit Card Fee \(1.5%\)) Tj
+T*
+(### Business Need) Tj
+T*
+(Company chahti hai ki payment external custom Stripe portal ki jagah **standard Odoo portal) Tj
+T*
+(flow** se ho, jisse reporting clean ho aur bugs kam hon.) Tj
+T*
+() Tj
+T*
+(### Required Behavior) Tj
+T*
+(Jab customer credit card \(Stripe\) choose kare:) Tj
+T*
+(1. **1.5% surcharge** auto calculate ho.) Tj
+T*
+(2. Invoice mein auto ek alag line item add ho.) Tj
+T*
+(3. Customer checkbox se acknowledge kare ki credit card fee apply hogi.) Tj
+T*
+() Tj
+T*
+(### Yeh flow 3 jagah kaam kare) Tj
+T*
+(1. Pay an Invoice) Tj
+T*
+(2. Book and Pay for Training) Tj
+T*
+(3. Purchase a Product) Tj
+T*
+() Tj
+T*
+(Existing stripe link \(reference\):  ) Tj
+T*
+(https://www.ahaconsulting.net.au/stripe-payment) Tj
+T*
+() Tj
+T*
+(### Suggested Technical Approach \(Odoo V19-compatible\)) Tj
+T*
+(- Company settings mein fee rate field maintain karein \(example: 1.5\).) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 4 0 R >>
+endobj
+6 0 obj
+<< /Length 2111 >>
+stream
+BT
+/F1 10 Tf
+48 800 Td
+14 TL
+(- Payment method selection event par surcharge line add/remove logic.) Tj
+T*
+(- Product-level dedicated ?Stripe Fee Product? use karein.) Tj
+T*
+(- Tax treatment accounting team ke rule ke hisaab se set karein.) Tj
+T*
+(- Audit trail ke liye chatter/log maintain karein.) Tj
+T*
+() Tj
+T*
+(---) Tj
+T*
+() Tj
+T*
+(## 5\) Priority 2 - Training Courses Display) Tj
+T*
+(### Goal) Tj
+T*
+(Website par do views hone chahiye:) Tj
+T*
+(1. **Upcoming events** \(scheduled with date\)) Tj
+T*
+(2. **Course portfolio** \(evergreen catalog, even if unscheduled\)) Tj
+T*
+() Tj
+T*
+(### Filters required) Tj
+T*
+(- Provider type:) Tj
+T*
+(  - Aha Academy: public full visibility + booking allowed) Tj
+T*
+(  - IAP2: public ko limited details; full course/price login ke baad) Tj
+T*
+(- Content type:) Tj
+T*
+(  - Engagement, Conflict, Facilitation, Evaluation) Tj
+T*
+(- Extra actions:) Tj
+T*
+(  - Booking link) Tj
+T*
+(  - Downloadable PDF) Tj
+T*
+() Tj
+T*
+(### Odoo standard limitation \(important\)) Tj
+T*
+(- Odoo standard mein login-status ke base par specific field hide/show direct config se) Tj
+T*
+(limited hota hai.) Tj
+T*
+(- Event ko website par dikhane ke liye date required hoti hai.) Tj
+T*
+() Tj
+T*
+(### Practical Solution) Tj
+T*
+(1. Event Tags se provider/content filters implement karein.) Tj
+T*
+(2. Login-based visibility ke liye custom website template logic add karein.) Tj
+T*
+(3. ?Portfolio? ke liye separate website model/page banayein jahan unscheduled courses bhi) Tj
+T*
+(visible hon.) Tj
+T*
+(4. Event records ke liye scheduled/unscheduled + publish/unpublish toggles add karein.) Tj
+T*
+() Tj
+T*
+(---) Tj
+T*
+() Tj
+T*
+(## 6\) Priority 3 - Past Work Catalog) Tj
+T*
+(### Requirement) Tj
+T*
+(Public-facing ?Past Work? page jisme:) Tj
+T*
+(- Filter by **Sector**) Tj
+T*
+(- Filter by **Type of Work**) Tj
+T*
+(- Dono filters ek saath kaam karein) Tj
+T*
+(- Dynamic results aayein \(page reload dependent static listing na ho\)) Tj
+T*
+() Tj
+T*
+(### Content Source) Tj
+T*
+(- Spreadsheet-driven data \(name, categories, images, PDF links, etc.\)) Tj
+T*
+(- Non-technical team easily update kar sake) Tj
+ET
+endstream
+endobj
+7 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 6 0 R >>
+endobj
+8 0 obj
+<< /Length 2385 >>
+stream
+BT
+/F1 10 Tf
+48 800 Td
+14 TL
+() Tj
+T*
+(### Recommended Architecture) Tj
+T*
+(1. Spreadsheet sync job \(scheduled import\) -> Odoo custom model.) Tj
+T*
+(2. Website card layout \(Level 1 summary + Level 2 detail accordion/button\).) Tj
+T*
+(3. Multi-filter sidebar + dynamic query rendering.) Tj
+T*
+(4. Optional cache layer for speed.) Tj
+T*
+() Tj
+T*
+(---) Tj
+T*
+() Tj
+T*
+(## 7\) Priority 4 - Ongoing AdHoc Support) Tj
+T*
+(Agar future mein Odoo.sh move hota hai to support scope mein include ho:) Tj
+T*
+(1. Ad-hoc bug fixes) Tj
+T*
+(2. Version update support) Tj
+T*
+(3. Repository hosting and release hygiene) Tj
+T*
+() Tj
+T*
+(---) Tj
+T*
+() Tj
+T*
+(## 8\) Attachment/Screenshot Explanation \(Simple\)) Tj
+T*
+(Neeche diye screenshots se current system behavior samajh aata hai:) Tj
+T*
+() Tj
+T*
+(### Screenshot 1 - Past Work page \(empty result\)) Tj
+T*
+(- Filter panel left side par hai \(Sector + Type of Work\).) Tj
+T*
+(- Message aa raha: ?No projects matched your selected filters.?) Tj
+T*
+(- Isse clear hai ki filtering setup hai, but data mapping ya filter combination issue ho) Tj
+T*
+(sakta hai.) Tj
+T*
+() Tj
+T*
+(### Screenshot 2 - Training Courses listing page) Tj
+T*
+(- Upcoming events/portfolio tabs visible hain.) Tj
+T*
+(- Search + provider + content type + schedule filters available.) Tj
+T*
+(- Course cards with actions \(Book, More information, Download PDF\) shown.) Tj
+T*
+() Tj
+T*
+(### Screenshot 3 - Download behavior) Tj
+T*
+(- Browser download tray mein files appear ho rahi hain.) Tj
+T*
+(- Isse confirm hota hai ki download link action trigger ho raha hai.) Tj
+T*
+(- Validate karna hai ki correct file per course bind ho.) Tj
+T*
+() Tj
+T*
+(### Screenshot 4 - Odoo backend event form) Tj
+T*
+(- Custom fields visible: Provider Type, Content Type, Show in Portfolio, Unscheduled) Tj
+T*
+(Course, Booking Link, More Information Link, Training PDF.) Tj
+T*
+(- Yeh dikhata hai ki training catalog customization ka backend foundation present hai.) Tj
+T*
+() Tj
+T*
+(### Screenshot 5 - Company Stripe Surcharge config) Tj
+T*
+(- Company settings mein Stripe Card Fee Rate set hai \(example: 1.50%\).) Tj
+T*
+(- Stripe fee product mapping ka concept available lag raha hai.) Tj
+T*
+() Tj
+T*
+(### Screenshot 6 - Portal My Account page) Tj
+T*
+(- Customer portal functional hai aur invoices/orders access available hai.) Tj
+T*
+(- Standard portal flow use karne ka objective realistic hai.) Tj
+ET
+endstream
+endobj
+9 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 8 0 R >>
+endobj
+10 0 obj
+<< /Length 1595 >>
+stream
+BT
+/F1 10 Tf
+48 800 Td
+14 TL
+() Tj
+T*
+(### Screenshot 7 - Portal invoice list with Pay Now) Tj
+T*
+(- Multiple invoices par ?Pay Now? action visible hai.) Tj
+T*
+(- Payment flow portal se accessible hai, surcharge integration isi flow mein fit hogi.) Tj
+T*
+() Tj
+T*
+(### Screenshot 8 - Payment popup \(no provider available\)) Tj
+T*
+(- Message: ?No payment providers are configured.?) Tj
+T*
+(- Yeh indicate karta hai ki Stripe/provider activation/configuration incomplete hai.) Tj
+T*
+(- Priority 1 deploy se pehle payment provider activation mandatory hai.) Tj
+T*
+() Tj
+T*
+(---) Tj
+T*
+() Tj
+T*
+(## 9\) Immediate Action Plan \(Recommended\)) Tj
+T*
+(1. Payment provider configuration fix + Stripe test mode validation.) Tj
+T*
+(2. Surcharge logic ko invoice/training/product teeno flows mein implement + QA.) Tj
+T*
+(3. Training catalog ke login-conditional visibility rules implement.) Tj
+T*
+(4. Past Work spreadsheet sync + dynamic filter page implement.) Tj
+T*
+(5. UAT checklist bana kar staged rollout karein.) Tj
+T*
+() Tj
+T*
+(---) Tj
+T*
+() Tj
+T*
+(## 10\) Risk Notes) Tj
+T*
+(- Live database par direct changes bina backup ke na karein.) Tj
+T*
+(- Existing custom modules ka dependency map pehle banayein.) Tj
+T*
+(- Odoo V19 future upgrades ko dhyan mein rakhkar clean modular code likhein.) Tj
+T*
+() Tj
+T*
+(---) Tj
+T*
+() Tj
+T*
+(## 11\) Final Summary \(One Line\)) Tj
+T*
+(Aapka scope clear hai: **Odoo V19 par stable, upgrade-safe customization** chahiye jisme) Tj
+T*
+(payment surcharge automation, training catalog controls, past-work dynamic showcase aur) Tj
+T*
+(ongoing support include ho.) Tj
+ET
+endstream
+endobj
+11 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 10 0 R >>
+endobj
+xref
+0 12
+0000000000 65535 f 
+0000000015 00000 n 
+0000000064 00000 n 
+0000000142 00000 n 
+0000000212 00000 n 
+0000002418 00000 n 
+0000002544 00000 n 
+0000004707 00000 n 
+0000004833 00000 n 
+0000007270 00000 n 
+0000007396 00000 n 
+0000009044 00000 n 
+trailer
+<< /Size 12 /Root 1 0 R >>
+startxref
+9172
+%%EOF
