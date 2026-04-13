@@ -1,0 +1,618 @@
+%PDF-1.4
+%
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Count 6 /Kids [ 5 0 R 7 0 R 9 0 R 11 0 R 13 0 R 15 0 R ] >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Length 1666 >>
+stream
+BT
+/F1 10 Tf
+50 800 Td
+14 TL
+(# Odoo 18 Installation Process) Tj
+T*
+() Tj
+T*
+(## 1\) Overview) Tj
+T*
+(This guide explains a production-oriented installation of **Odoo 18** on Ubuntu Server) Tj
+T*
+(\(22.04/24.04\), including PostgreSQL, Python virtual environment, systemd service setup, and) Tj
+T*
+(Nginx reverse proxy.) Tj
+T*
+() Tj
+T*
+(> **Audience:** Linux administrators and developers who want a maintainable Odoo deployment.) Tj
+T*
+() Tj
+T*
+(---) Tj
+T*
+() Tj
+T*
+(## 2\) Prerequisites) Tj
+T*
+(- Ubuntu Server 22.04 LTS or 24.04 LTS) Tj
+T*
+(- A user with `sudo` privileges) Tj
+T*
+(- At least:) Tj
+T*
+(  - 2 vCPU) Tj
+T*
+(  - 4 GB RAM \(8 GB recommended\)) Tj
+T*
+(  - 20+ GB free disk) Tj
+T*
+(- Domain name \(optional but recommended for SSL\)) Tj
+T*
+() Tj
+T*
+(---) Tj
+T*
+() Tj
+T*
+(## 3\) Update System Packages) Tj
+T*
+(```bash) Tj
+T*
+(sudo apt update && sudo apt -y upgrade) Tj
+T*
+(sudo reboot) Tj
+T*
+(```) Tj
+T*
+() Tj
+T*
+(---) Tj
+T*
+() Tj
+T*
+(## 4\) Install Required Dependencies) Tj
+T*
+(```bash) Tj
+T*
+(sudo apt install -y git python3-pip python3-venv python3-dev \\) Tj
+T*
+(  libxml2-dev libxslt1-dev zlib1g-dev libsasl2-dev libldap2-dev \\) Tj
+T*
+(  libjpeg-dev libpq-dev libffi-dev libssl-dev build-essential \\) Tj
+T*
+(  libblas-dev libatlas-base-dev liblcms2-dev libwebp-dev \\) Tj
+T*
+(  node-less npm wkhtmltopdf) Tj
+T*
+(```) Tj
+T*
+() Tj
+T*
+(> If your distribution package for `wkhtmltopdf` is outdated or has missing patches, install) Tj
+T*
+(the official patched build.) Tj
+T*
+() Tj
+T*
+(---) Tj
+T*
+() Tj
+T*
+(## 5\) Install and Configure PostgreSQL) Tj
+T*
+(```bash) Tj
+T*
+(sudo apt install -y postgresql) Tj
+T*
+(sudo -u postgres createuser -s odoo18) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 4 0 R >>
+endobj
+6 0 obj
+<< /Length 1292 >>
+stream
+BT
+/F1 10 Tf
+50 800 Td
+14 TL
+(```) Tj
+T*
+() Tj
+T*
+(Optional: set a password for the PostgreSQL role.) Tj
+T*
+(```bash) Tj
+T*
+(sudo -u postgres psql) Tj
+T*
+(ALTER USER odoo18 WITH PASSWORD 'strong_password_here';) Tj
+T*
+(\\q) Tj
+T*
+(```) Tj
+T*
+() Tj
+T*
+(---) Tj
+T*
+() Tj
+T*
+(## 6\) Create Odoo System User) Tj
+T*
+(```bash) Tj
+T*
+(sudo useradd -m -d /opt/odoo18 -U -r -s /bin/bash odoo18) Tj
+T*
+(```) Tj
+T*
+() Tj
+T*
+(---) Tj
+T*
+() Tj
+T*
+(## 7\) Download Odoo 18 Source Code) Tj
+T*
+(```bash) Tj
+T*
+(sudo su - odoo18) Tj
+T*
+(git clone https://www.github.com/odoo/odoo --depth 1 --branch 18.0 /opt/odoo18/odoo) Tj
+T*
+(exit) Tj
+T*
+(```) Tj
+T*
+() Tj
+T*
+(---) Tj
+T*
+() Tj
+T*
+(## 8\) Create Python Virtual Environment and Install Requirements) Tj
+T*
+(```bash) Tj
+T*
+(sudo su - odoo18) Tj
+T*
+(python3 -m venv /opt/odoo18/venv) Tj
+T*
+(source /opt/odoo18/venv/bin/activate) Tj
+T*
+(pip install --upgrade pip wheel) Tj
+T*
+(pip install -r /opt/odoo18/odoo/requirements.txt) Tj
+T*
+(deactivate) Tj
+T*
+(exit) Tj
+T*
+(```) Tj
+T*
+() Tj
+T*
+(---) Tj
+T*
+() Tj
+T*
+(## 9\) Create Custom Addons and Log Directories) Tj
+T*
+(```bash) Tj
+T*
+(sudo mkdir -p /opt/odoo18/custom-addons) Tj
+T*
+(sudo mkdir -p /var/log/odoo18) Tj
+T*
+(sudo chown -R odoo18:odoo18 /opt/odoo18 /var/log/odoo18) Tj
+T*
+(```) Tj
+T*
+() Tj
+T*
+(---) Tj
+ET
+endstream
+endobj
+7 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 6 0 R >>
+endobj
+8 0 obj
+<< /Length 1312 >>
+stream
+BT
+/F1 10 Tf
+50 800 Td
+14 TL
+() Tj
+T*
+(## 10\) Create Odoo Configuration File) Tj
+T*
+(Create `/etc/odoo18.conf`:) Tj
+T*
+() Tj
+T*
+(```ini) Tj
+T*
+([options]) Tj
+T*
+(admin_passwd = change_this_master_password) Tj
+T*
+(db_host = False) Tj
+T*
+(db_port = False) Tj
+T*
+(db_user = odoo18) Tj
+T*
+(db_password = False) Tj
+T*
+(addons_path = /opt/odoo18/odoo/addons,/opt/odoo18/custom-addons) Tj
+T*
+(logfile = /var/log/odoo18/odoo.log) Tj
+T*
+(xmlrpc_port = 8069) Tj
+T*
+(proxy_mode = True) Tj
+T*
+(```) Tj
+T*
+() Tj
+T*
+(Set secure permissions:) Tj
+T*
+(```bash) Tj
+T*
+(sudo chown odoo18: /etc/odoo18.conf) Tj
+T*
+(sudo chmod 640 /etc/odoo18.conf) Tj
+T*
+(```) Tj
+T*
+() Tj
+T*
+(---) Tj
+T*
+() Tj
+T*
+(## 11\) Create systemd Service) Tj
+T*
+(Create `/etc/systemd/system/odoo18.service`:) Tj
+T*
+() Tj
+T*
+(```ini) Tj
+T*
+([Unit]) Tj
+T*
+(Description=Odoo18) Tj
+T*
+(Requires=postgresql.service) Tj
+T*
+(After=network.target postgresql.service) Tj
+T*
+() Tj
+T*
+([Service]) Tj
+T*
+(Type=simple) Tj
+T*
+(User=odoo18) Tj
+T*
+(Group=odoo18) Tj
+T*
+(ExecStart=/opt/odoo18/venv/bin/python3 /opt/odoo18/odoo/odoo-bin -c /etc/odoo18.conf) Tj
+T*
+(StandardOutput=journal+console) Tj
+T*
+() Tj
+T*
+([Install]) Tj
+T*
+(WantedBy=multi-user.target) Tj
+T*
+(```) Tj
+T*
+() Tj
+T*
+(Enable and start the service:) Tj
+T*
+(```bash) Tj
+T*
+(sudo systemctl daemon-reload) Tj
+ET
+endstream
+endobj
+9 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 8 0 R >>
+endobj
+10 0 obj
+<< /Length 1415 >>
+stream
+BT
+/F1 10 Tf
+50 800 Td
+14 TL
+(sudo systemctl enable --now odoo18) Tj
+T*
+(sudo systemctl status odoo18) Tj
+T*
+(```) Tj
+T*
+() Tj
+T*
+(---) Tj
+T*
+() Tj
+T*
+(## 12\) Configure Nginx Reverse Proxy \(Recommended\)) Tj
+T*
+(Install Nginx:) Tj
+T*
+(```bash) Tj
+T*
+(sudo apt install -y nginx) Tj
+T*
+(```) Tj
+T*
+() Tj
+T*
+(Create `/etc/nginx/sites-available/odoo18`:) Tj
+T*
+() Tj
+T*
+(```nginx) Tj
+T*
+(server {) Tj
+T*
+(    listen 80;) Tj
+T*
+(    server_name your-domain.com;) Tj
+T*
+() Tj
+T*
+(    proxy_read_timeout 720s;) Tj
+T*
+(    proxy_connect_timeout 720s;) Tj
+T*
+(    proxy_send_timeout 720s;) Tj
+T*
+() Tj
+T*
+(    client_max_body_size 200m;) Tj
+T*
+() Tj
+T*
+(    location / {) Tj
+T*
+(        proxy_pass http://127.0.0.1:8069;) Tj
+T*
+(        proxy_set_header Host $host;) Tj
+T*
+(        proxy_set_header X-Real-IP $remote_addr;) Tj
+T*
+(        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;) Tj
+T*
+(        proxy_set_header X-Forwarded-Proto $scheme;) Tj
+T*
+(    }) Tj
+T*
+(}) Tj
+T*
+(```) Tj
+T*
+() Tj
+T*
+(Enable site:) Tj
+T*
+(```bash) Tj
+T*
+(sudo ln -s /etc/nginx/sites-available/odoo18 /etc/nginx/sites-enabled/) Tj
+T*
+(sudo nginx -t) Tj
+T*
+(sudo systemctl restart nginx) Tj
+T*
+(```) Tj
+T*
+() Tj
+T*
+(---) Tj
+T*
+() Tj
+T*
+(## 13\) Enable SSL with Let's Encrypt \(Optional, Recommended\)) Tj
+T*
+(```bash) Tj
+T*
+(sudo apt install -y certbot python3-certbot-nginx) Tj
+T*
+(sudo certbot --nginx -d your-domain.com) Tj
+ET
+endstream
+endobj
+11 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 10 0 R >>
+endobj
+12 0 obj
+<< /Length 1505 >>
+stream
+BT
+/F1 10 Tf
+50 800 Td
+14 TL
+(```) Tj
+T*
+() Tj
+T*
+(---) Tj
+T*
+() Tj
+T*
+(## 14\) Access Odoo) Tj
+T*
+(- URL: `http://your-server-ip:8069` \(direct\) or `https://your-domain.com` \(via Nginx + SSL\)) Tj
+T*
+(- Create database from the setup page.) Tj
+T*
+(- Set strong admin credentials.) Tj
+T*
+() Tj
+T*
+(---) Tj
+T*
+() Tj
+T*
+(## 15\) Basic Troubleshooting) Tj
+T*
+(### Check service logs) Tj
+T*
+(```bash) Tj
+T*
+(sudo journalctl -u odoo18 -f) Tj
+T*
+(```) Tj
+T*
+() Tj
+T*
+(### Check Odoo log file) Tj
+T*
+(```bash) Tj
+T*
+(sudo tail -f /var/log/odoo18/odoo.log) Tj
+T*
+(```) Tj
+T*
+() Tj
+T*
+(### Common issues) Tj
+T*
+(- **Port 8069 in use**: change `xmlrpc_port` in config.) Tj
+T*
+(- **Permission denied**: verify ownership of `/opt/odoo18` and `/var/log/odoo18`.) Tj
+T*
+(- **502 Bad Gateway**: verify Odoo service is running and Nginx proxy target is) Tj
+T*
+(`127.0.0.1:8069`.) Tj
+T*
+() Tj
+T*
+(---) Tj
+T*
+() Tj
+T*
+(## 16\) Post-Installation Hardening Checklist) Tj
+T*
+(- Change `admin_passwd` in `/etc/odoo18.conf`.) Tj
+T*
+(- Use a strong PostgreSQL password and restrict DB access.) Tj
+T*
+(- Enable firewall \(`ufw`\) and allow only required ports.) Tj
+T*
+(- Keep packages and Odoo code updated.) Tj
+T*
+(- Back up PostgreSQL databases and filestore regularly.) Tj
+T*
+() Tj
+T*
+(---) Tj
+T*
+() Tj
+T*
+(## 17\) Maintenance Commands) Tj
+T*
+(Restart Odoo:) Tj
+T*
+(```bash) Tj
+T*
+(sudo systemctl restart odoo18) Tj
+T*
+(```) Tj
+T*
+() Tj
+T*
+(Update Odoo code \(manual example\):) Tj
+T*
+(```bash) Tj
+T*
+(sudo su - odoo18) Tj
+ET
+endstream
+endobj
+13 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 12 0 R >>
+endobj
+14 0 obj
+<< /Length 519 >>
+stream
+BT
+/F1 10 Tf
+50 800 Td
+14 TL
+(cd /opt/odoo18/odoo) Tj
+T*
+(git pull) Tj
+T*
+(source /opt/odoo18/venv/bin/activate) Tj
+T*
+(pip install -r requirements.txt) Tj
+T*
+(deactivate) Tj
+T*
+(exit) Tj
+T*
+(sudo systemctl restart odoo18) Tj
+T*
+(```) Tj
+T*
+() Tj
+T*
+(---) Tj
+T*
+() Tj
+T*
+(## Notes) Tj
+T*
+(- This is a generic guideline and may need adaptation for your hosting provider and security) Tj
+T*
+(policy.) Tj
+T*
+(- For enterprise deployments, consider staging, monitoring, backups, and CI/CD-based update) Tj
+T*
+(flows.) Tj
+ET
+endstream
+endobj
+15 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 14 0 R >>
+endobj
+xref
+0 16
+0000000000 65535 f 
+0000000015 00000 n 
+0000000064 00000 n 
+0000000156 00000 n 
+0000000226 00000 n 
+0000001944 00000 n 
+0000002070 00000 n 
+0000003414 00000 n 
+0000003540 00000 n 
+0000004904 00000 n 
+0000005030 00000 n 
+0000006498 00000 n 
+0000006626 00000 n 
+0000008184 00000 n 
+0000008312 00000 n 
+0000008883 00000 n 
+trailer
+<< /Size 16 /Root 1 0 R >>
+startxref
+9011
+%%EOF
